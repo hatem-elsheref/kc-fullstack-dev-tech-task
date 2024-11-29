@@ -9,4 +9,4 @@ use HM\Core\KC\Application;
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-(new Application(false, __DIR__))->start();
+(new Application(true, __DIR__))->start();
