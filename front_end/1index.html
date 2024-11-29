@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Catalog</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<div class="page-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2>Course Categories</h2>
+        <ul class="nested-list">
+            <li><a href="#" data-category="all" class="active">All Courses</a></li>
+            <li><a href="#" data-category="technology">Technology (3)</a>
+                <ul>
+                    <li><a href="#" data-category="software">Software Development</a></li>
+                    <li><a href="#" data-category="hardware-2">Hardware Engineering 2</a></li>
+                    <li><a href="#" data-category="hardware-3">Hardware Engineering 3</a></li>
+                </ul>
+            </li>
+            <li><a href="#" data-category="education">Education (7)</a>
+                <ul>
+                    <li><a href="#" data-category="higher-education">Higher Education (2)</a></li>
+                    <li><a href="#" data-category="k12-education">K-12 Education (5)</a></li>
+                </ul>
+            </li>
+            <li><a href="#" data-category="finance">Finance (6)</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+        <h1 id="category-title">All Courses</h1>
+        <div class="course-grid">
+            <!-- Course Cards -->
+            <div class="course-card" data-category="education higher-education">
+                <img src="https://via.placeholder.com/300x150" alt="Leadership">
+                <span class="category-tag">Education</span>
+                <h3>Leadership for Identity Diversity</h3>
+                <p>Leadership for bringing diverse teams together...</p>
+            </div>
+            <div class="course-card" data-category="education higher-education">
+                <img src="https://via.placeholder.com/300x150" alt="Diversity">
+                <span class="category-tag">Education</span>
+                <h3>Applying Yourself to Diversity</h3>
+                <p>Improving diversity in the workplace...</p>
+            </div>
+            <div class="course-card" data-category="technology">
+                <img src="https://via.placeholder.com/300x150" alt="AI">
+                <span class="category-tag">Technology</span>
+                <h3>Artificial Intelligence Basics</h3>
+                <p>An introduction to AI and machine learning...</p>
+            </div>
+            <div class="course-card" data-category="finance">
+                <img src="https://via.placeholder.com/300x150" alt="Finance">
+                <span class="category-tag">Finance</span>
+                <h3>Financial Planning and Analysis</h3>
+                <p>Mastering financial strategies...</p>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    // Filter Courses by Category
+    document.querySelectorAll('.nested-list a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            // Remove active class from all links
+            document.querySelectorAll('.nested-list a').forEach(item => item.classList.remove('active'));
+
+            // Add active class to the clicked link
+            link.classList.add('active');
+
+            // Get the category
+            const category = link.getAttribute('data-category');
+
+            // Filter courses
+            document.querySelectorAll('.course-card').forEach(card => {
+                if (category === 'all' || card.dataset.category.includes(category)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Update the category title
+            const categoryTitle = category.replace('-', ' ').toUpperCase();
+            document.getElementById('category-title').textContent = categoryTitle === 'ALL' ? 'All Courses' : categoryTitle;
+        });
+    });
+
+</script>
+</body>
+</html>

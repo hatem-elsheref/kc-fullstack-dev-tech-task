@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Catalog</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="put-categories-here">
+        <ul class="nested-list" >
+                <li class="category">
+                    Arts &amp; Entertainment (1)
+                    <ul>
+                        <li>Visual Arts (1)</li>
+                        <li>Performing Arts</li>
+                    </ul>
+                </li>
+                <li  class="category">
+                    Technology (3)
+                    <ul>
+                        <li>
+                            Software Development (3)
+                            <ul>
+                                <li>
+                                    Hardware Engineering 2 (3)
+                                    <ul>
+                                        <li>Hardware Engineering 3 (1)</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li  class="category">
+                    Science &amp; Nature
+                    <ul>
+                        <li>Biology</li>
+                        <li>Physics</li>
+                    </ul>
+                </li>
+                <li  class="category">
+                    Education (2)
+                    <ul>
+                        <li>Higher Education (1)</li>
+                        <li>K-12 Education</li>
+                    </ul>
+                </li>
+                <li  class="category">
+                    Food &amp; Cooking (1)
+                    <ul>
+                        <li>Recipes</li>
+                        <li>Culinary Techniques (1)</li>
+                    </ul>
+                </li>
+                <li  class="category">
+                    Health &amp; Wellness (1)
+                    <ul>
+                        <li>Fitness &amp; Nutrition</li>
+                        <li>Mental Health</li>
+                    </ul>
+                </li>
+                <li  class="category">
+                    Travel &amp; Tourism
+                    <ul>
+                        <li>Destinations</li>
+                        <li>Travel Tips</li>
+                    </ul>
+                </li>
+
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="course-catalog">
+        <div class="category-title-container" >
+            <p id="category-title">Course Catalog</p>
+        </div>
+        <div class="course-grid" id="put-courses-here">
+
+        </div>
+    </main>
+</div>
+<script src="app.js"></script>
+<script>
+    get('courses').then(data => {
+        document.getElementById('put-courses-here').innerHTML = ''
+        data.forEach(function (item){
+            let courseItem = courseTemplate(item.course_id, item.name, item.description, item.preview, item.main_category_name);
+            document.getElementById('put-courses-here').innerHTML+= courseItem
+        })
+    })
+
+    get('categories/tree').then(data => {
+       document.getElementById('put-categories-here').innerHTML = data.html
+    })
+</script>
+</body>
+</html>

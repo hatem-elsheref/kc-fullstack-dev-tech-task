@@ -64,15 +64,15 @@ class CategoryService
         }
         return $parents;
     }
-    function generateListItems(array $categories) :string
+    function generateListItems(array $categories, $start) :string
     {
-        $html = '<ul>';
+        $html = is_null($start) ? '<ul class="nested-list">' : '<ul>';
 
         foreach ($categories as $category) {
-            $html .= sprintf('<li> %s (%s)', htmlspecialchars($category['name']), $category['total']);
+            $html .= sprintf('<li> %s %s', htmlspecialchars($category['name']), $category['total'] > 0 ? '(' . $category['total'] . ')' : '');
 
             if (!empty($category['children'])) {
-                $html .= $this->generateListItems($category['children']);
+                $html .= $this->generateListItems($category['children'], 1);
             }
 
             $html .= '</li>';
@@ -84,6 +84,6 @@ class CategoryService
     {
         $tree = $this->asTree($categories, $start, $level);
 
-        return $this->generateListItems($tree);
+        return $this->generateListItems($tree, $start);
     }
 }
