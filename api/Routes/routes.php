@@ -5,15 +5,15 @@ use App\Http\Controllers\CourseController;
 use HM\Core\KC\Application;
 use HM\Core\KC\Route;
 
-Route::get('/'                , [CourseController::class, 'index']);
-Route::get('/courses'         , [CourseController::class, 'index']);
-Route::get('/courses/{id}'    , [CourseController::class, 'show']);
+Route::get('/', [CourseController::class, 'index']);
+Route::get('/courses', [CourseController::class, 'index']);
+Route::get('/courses/{id}', [CourseController::class, 'show']);
 
-Route::get('/categories'      , [CategoryController::class, 'index']);
-Route::get('/categories/tree' , [CategoryController::class, 'tree']);
-Route::get('/categories/{id}' , [CategoryController::class, 'show']);
+Route::get('/categories', [CategoryController::class, 'index']);
+Route::get('/categories/tree', [CategoryController::class, 'tree']);
+Route::get('/categories/{id}', [CategoryController::class, 'show']);
 
-Route::get('/add-dummy-categories'  , function (){
+Route::get('/add-dummy-categories', function () {
     $categories = json_decode(file_get_contents(__DIR__ . "/../Database/Seeds/categories.json"));
 
     $connection = Application::$app->database->connection;
@@ -35,12 +35,12 @@ Route::get('/add-dummy-categories'  , function (){
 
         echo 'Categories Added Successfully';
 
-    }catch (Exception $e){
+    } catch (Exception $e) {
         $connection->rollback();
         echo $e->getMessage();
     }
 });
-Route::get('/add-dummy-courses'  , function (){
+Route::get('/add-dummy-courses', function () {
     $courses = json_decode(file_get_contents(__DIR__ . "/../Database/Seeds/courses.json"));
 
     $connection = Application::$app->database->connection;
@@ -64,7 +64,7 @@ Route::get('/add-dummy-courses'  , function (){
 
         echo 'Courses Added Successfully';
 
-    }catch (Exception $e){
+    } catch (Exception $e) {
         $connection->rollBack();
         echo $e->getMessage();
     }

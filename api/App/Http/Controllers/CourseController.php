@@ -7,7 +7,7 @@ use HM\Core\KC\Application;
 
 class CourseController extends Controller
 {
-    public function index() :string
+    public function index(): string
     {
         $courseService = new CourseService();
 
@@ -16,7 +16,7 @@ class CourseController extends Controller
         return json_encode($courseService->getAllCourses($queryString));
     }
 
-    public function show($id) :string
+    public function show($id): string
     {
         $courseService = new CourseService();
 

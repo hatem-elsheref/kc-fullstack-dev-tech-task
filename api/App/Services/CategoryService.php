@@ -29,14 +29,14 @@ class CategoryService
 
         return $result->fetch(PDO::FETCH_OBJ);
     }
-    public function getTree($isHtml = true) :string|array
+    public function getTree($isHtml = true): string|array
     {
         $categories = $this->getAllCategories();
         return $isHtml
             ? $this->asHtml($categories, null, 4)
             : $this->asTree($categories, null, 4);
     }
-    public function asTree($categories, $start, $level) :array
+    public function asTree($categories, $start, $level): array
     {
         $parents = [];
         if ($level > 0) {
@@ -64,12 +64,12 @@ class CategoryService
         }
         return $parents;
     }
-    function generateListItems(array $categories, $start) :string
+    public function generateListItems(array $categories, $start): string
     {
         $html = is_null($start) ? '<ul class="nested-list">' : '<ul>';
 
         foreach ($categories as $category) {
-            $html .= sprintf('<li> %s %s', htmlspecialchars($category['name']), $category['total'] > 0 ? '(' . $category['total'] . ')' : '');
+            $html .= sprintf('<li data-name="%s" id="%s" class="category clickable"> %s %s', $category['name'], $category['id'], htmlspecialchars($category['name']), $category['total'] > 0 ? '<span class="total_courses"> (' . $category['total'] . ')</span>' : '');
 
             if (!empty($category['children'])) {
                 $html .= $this->generateListItems($category['children'], 1);
@@ -80,7 +80,7 @@ class CategoryService
 
         return  $html . '</ul>';
     }
-    public function asHtml($categories, $start, $level) :string
+    public function asHtml($categories, $start, $level): string
     {
         $tree = $this->asTree($categories, $start, $level);
 

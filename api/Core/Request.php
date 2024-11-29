@@ -46,8 +46,9 @@ class Request
     }
     public function path($withQueryString = true): string
     {
-        if ($withQueryString || strpos($this->path, '?') === false)
+        if ($withQueryString || strpos($this->path, '?') === false) {
             return $this->path;
+        }
 
         $parts = explode('?', $this->path);
 
@@ -59,22 +60,22 @@ class Request
         return isset($key) ? $this->query[$key] ?? $default : $this->query;
     }
 
-    public function setParam(string $key, $value = null) :void
+    public function setParam(string $key, $value = null): void
     {
         $this->params[$key] = $value;
     }
 
-    public function removeParams() :void
+    public function removeParams(): void
     {
         $this->params = [];
     }
 
-    public function params() :array
+    public function params(): array
     {
         return $this->params;
     }
 
-    public function param(string $key, $default = null) :?string
+    public function param(string $key, $default = null): ?string
     {
         return $this->params[$key] ?? $default;
     }

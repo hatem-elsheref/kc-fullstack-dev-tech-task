@@ -39,7 +39,7 @@ class Application
         self::$app = $this;
     }
 
-    public function start() :void
+    public function start(): void
     {
         if (!$this->isRunningInConsole) {
             echo $this->route->handle();
@@ -49,9 +49,9 @@ class Application
         $this->runInConsole();
     }
 
-    private function runInConsole() : mixed
+    private function runInConsole(): mixed
     {
-        do{
+        do {
             echo 'Select Operation : ' . PHP_EOL;
             echo '1) Run Migrations: ' . PHP_EOL;
             echo '2) Exit          : ' . PHP_EOL;
@@ -66,7 +66,7 @@ class Application
                 default:
             }
 
-        }while(!in_array($operation, [1, 2]));
+        } while (!in_array($operation, [1, 2]));
     }
 
 }

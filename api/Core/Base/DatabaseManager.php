@@ -2,10 +2,11 @@
 
 namespace HM\Core\KC\Base;
 
-use \PDO;
-use \PDOException;
+use PDO;
+use PDOException;
 
-class DatabaseManager {
+class DatabaseManager
+{
     private string $databasePath;
     private string $host;
     private string $dbname;
@@ -24,7 +25,7 @@ class DatabaseManager {
         $this->port     = $configurations['port'];
     }
 
-    public function startConnection() :?Database
+    public function startConnection(): ?Database
     {
         try {
 
@@ -41,10 +42,9 @@ class DatabaseManager {
         }
     }
 
-    public function freshMigrate($migrationPath) :bool
+    public function freshMigrate($migrationPath): bool
     {
-        foreach (glob($this->databasePath . DIRECTORY_SEPARATOR . $migrationPath . DIRECTORY_SEPARATOR . '*.sql') as $migration)
-        {
+        foreach (glob($this->databasePath . DIRECTORY_SEPARATOR . $migrationPath . DIRECTORY_SEPARATOR . '*.sql') as $migration) {
             $queries = file_get_contents($migration);
 
             $this->connection->exec($queries);
@@ -54,7 +54,7 @@ class DatabaseManager {
     }
 
 
-    public function closeConnection() :void
+    public function closeConnection(): void
     {
         $this->connection = null;
     }

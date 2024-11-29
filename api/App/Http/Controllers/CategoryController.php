@@ -1,18 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Services\CategoryService;
 
 class CategoryController extends Controller
 {
-    public function index() :string
+    public function index(): string
     {
         $categoryService = new CategoryService();
 
         return json_encode($categoryService->getAllCategories());
     }
 
-    public function tree() :string
+    public function tree(): string
     {
         $categoryService = new CategoryService();
 
@@ -21,7 +22,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function show($id) :string
+    public function show($id): string
     {
         $categoryService = new CategoryService();
 

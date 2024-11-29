@@ -4,19 +4,20 @@ namespace HM\Core\KC;
 
 use ReflectionClass;
 use App\Http\Controllers\NotFoundController;
+
 class Route
 {
     public static $routes = [];
 
     private Request $request;
-    const string GET_METHOD = 'get';
+    public const string GET_METHOD = 'get';
 
     public function __construct(Request $request)
     {
         $this->request = $request;
     }
 
-    public static function get($path, $callback) :void
+    public static function get($path, $callback): void
     {
         self::$routes[self::GET_METHOD][$path] = $callback;
     }
@@ -25,7 +26,7 @@ class Route
     /**
      * @throws \ReflectionException
      */
-    public function handle() :mixed
+    public function handle(): mixed
     {
         try {
             $currentPath = $this->request->path(false);
@@ -45,7 +46,7 @@ class Route
 
                         $reflection = new ReflectionClass($controllerAndAction[0]);
 
-                        if (!$reflection->hasMethod($controllerAndAction[1])){
+                        if (!$reflection->hasMethod($controllerAndAction[1])) {
                             return (new NotFoundController())->actionNotFound($controllerAndAction[1]);
                         }
 
@@ -59,8 +60,8 @@ class Route
 
             return (new NotFoundController())->routeNotFound($this->request->method(), $currentPath);
 
-        }catch (\Exception $exception){
-            if ($exception instanceof \ReflectionException){
+        } catch (\Exception $exception) {
+            if ($exception instanceof \ReflectionException) {
                 return (new NotFoundController())->controllerNotFound($controllerAndAction[0]);
             }
 
@@ -69,7 +70,7 @@ class Route
 
     }
 
-    public function match($currentPath , $routePath) :bool
+    public function match($currentPath, $routePath): bool
     {
         $segments = explode('/', trim($routePath, '/'));
 
@@ -86,7 +87,7 @@ class Route
         foreach ($segments as $index => $segment) {
             if (preg_match('/^{([a-zA-Z0-9]+)}$/', $segment, $param)) {
                 $this->request->setParam($param[1], $currentPathSegments[$index]);
-            }elseif ($segment !== $currentPathSegments[$index]) {
+            } elseif ($segment !== $currentPathSegments[$index]) {
                 return false;
             }
         }

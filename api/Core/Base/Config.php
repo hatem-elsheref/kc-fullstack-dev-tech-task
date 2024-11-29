@@ -6,7 +6,7 @@ class Config
 {
     public static $config = [];
 
-    public function load() :void
+    public function load(): void
     {
         $configDir = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'Config';
 
@@ -19,12 +19,12 @@ class Config
         }
     }
 
-    public static function set($key, $value) :void
+    public static function set($key, $value): void
     {
         self::$config[$key] = $value;
     }
 
-    public static function get($key, $default = null) :mixed
+    public static function get($key, $default = null): mixed
     {
         return self::$config[$key] ?? $default;
     }
