@@ -1,4 +1,6 @@
-FROM ubuntu:latest
-LABEL authors="hatem"
+FROM php:8.3-apache
 
-ENTRYPOINT ["top", "-b"]
+# Install necessary dependencies and MySQL extension
+RUN apt-get update && \
+    docker-php-ext-install mysqli pdo_mysql && \
+    rm -rf /var/lib/apt/lists/*

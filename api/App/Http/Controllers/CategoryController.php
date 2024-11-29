@@ -1,15 +1,37 @@
 <?php
 
 namespace App\Http\Controllers;
-class CategoryController
+use App\Services\CategoryService;
+
+class CategoryController extends Controller
 {
-    public function index()
+    public function index() :string
     {
-        return 'show all categories';
+        $categoryService = new CategoryService();
+
+        return json_encode($categoryService->getAllCategories());
     }
 
-    public function show($id)
+    public function tree() :string
     {
-        return 'show one category';
+        $categoryService = new CategoryService();
+
+        return json_encode([
+            'html' => $categoryService->getTree(true)
+        ]);
+    }
+
+    public function show($id) :string
+    {
+        $categoryService = new CategoryService();
+
+        $category = $categoryService->getCategoryById($id);
+
+        return $category === false ?
+            json_encode([
+                'success' => false,
+                'message' => 'Category not found.'
+            ]) :
+            json_encode($category);
     }
 }

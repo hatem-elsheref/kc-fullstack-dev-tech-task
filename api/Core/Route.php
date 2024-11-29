@@ -30,7 +30,7 @@ class Route
         try {
             $currentPath = $this->request->path(false);
 
-            $routes = self::$routes[$this->request->method()];
+            $routes = self::$routes[$this->request->method()] ?? [];
 
             foreach ($routes as $path => $callback) {
 
@@ -57,13 +57,16 @@ class Route
                 }
             }
 
+            return (new NotFoundController())->routeNotFound($this->request->method(), $currentPath);
+
         }catch (\Exception $exception){
             if ($exception instanceof \ReflectionException){
                 return (new NotFoundController())->controllerNotFound($controllerAndAction[0]);
             }
+
+            throw $exception;
         }
 
-        return (new NotFoundController())->routeNotFound($currentPath);
     }
 
     public function match($currentPath , $routePath) :bool

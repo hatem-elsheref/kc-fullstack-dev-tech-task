@@ -13,6 +13,7 @@ class Application
     public Request $request;
     public Route $route;
     public Config $config;
+    public DatabaseManager $databaseManager;
     public Database $database;
 
     public static Application $app;
@@ -32,8 +33,8 @@ class Application
 
         $this->config->load();
 
-        $this->database = (new DatabaseManager(Config::get('database')[$_ENV['DB_DRIVER']]))
-            ->startConnection();
+        $this->databaseManager = (new DatabaseManager(Config::get('database')[$_ENV['DB_DRIVER']], $this->basePath . DIRECTORY_SEPARATOR . 'Database'));
+        $this->database = $this->databaseManager->startConnection();
 
         self::$app = $this;
     }
@@ -53,22 +54,19 @@ class Application
         do{
             echo 'Select Operation : ' . PHP_EOL;
             echo '1) Run Migrations: ' . PHP_EOL;
-            echo '2) Run Seeder    : ' . PHP_EOL;
-            echo '3) Exit          : ' . PHP_EOL;
+            echo '2) Exit          : ' . PHP_EOL;
 
             $operation = trim(fgets(STDIN));
 
             switch ($operation) {
                 case 1:
-                    return $this->database->freshMigrate($this->basePath . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'database');
+                    return $this->databaseManager->freshMigrate('Migrations');
                 case 2:
-                    return $this->database->seed($this->basePath . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'data');
-                case 3:
-                default:
                     return 0;
+                default:
             }
 
-        }while(!in_array($operation, [1, 2, 3]));
+        }while(!in_array($operation, [1, 2]));
     }
 
 }

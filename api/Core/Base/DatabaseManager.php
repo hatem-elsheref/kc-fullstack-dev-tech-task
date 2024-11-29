@@ -6,15 +6,17 @@ use \PDO;
 use \PDOException;
 
 class DatabaseManager {
+    private string $databasePath;
     private string $host;
     private string $dbname;
     private string $username;
     private string $password;
     private string $port;
-    private ?Database $connection = null;
+    private $connection = null;
 
-    public function __construct($configurations)
+    public function __construct($configurations, $databasePath)
     {
+        $this->databasePath = $databasePath;
         $this->host     = $configurations['host'];
         $this->username = $configurations['user'];
         $this->password = $configurations['pass'];
@@ -28,16 +30,29 @@ class DatabaseManager {
 
             $dsn = "mysql:host={$this->host};dbname={$this->dbname};charset=utf8;port={$this->port}";
 
-            $connection = new PDO($dsn, $this->username, $this->password);
+            $this->connection = new PDO($dsn, $this->username, $this->password);
 
-            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            return new Database($connection ?? null);
+            return new Database($this->connection ?? null);
 
         } catch (PDOException $e) {
             die(sprintf('Database connection failed: %s', $e->getMessage()));
         }
     }
+
+    public function freshMigrate($migrationPath) :bool
+    {
+        foreach (glob($this->databasePath . DIRECTORY_SEPARATOR . $migrationPath . DIRECTORY_SEPARATOR . '*.sql') as $migration)
+        {
+            $queries = file_get_contents($migration);
+
+            $this->connection->exec($queries);
+        }
+
+        return true;
+    }
+
 
     public function closeConnection() :void
     {

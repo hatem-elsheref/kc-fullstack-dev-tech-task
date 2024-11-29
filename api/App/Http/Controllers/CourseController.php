@@ -2,16 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CourseService;
+use HM\Core\KC\Application;
 
 class CourseController extends Controller
 {
-    public function index()
+    public function index() :string
     {
-        return 'show all courses';
+        $courseService = new CourseService();
+
+        $queryString = Application::$app->request->query();
+
+        return json_encode($courseService->getAllCourses($queryString));
     }
 
-    public function show($id)
+    public function show($id) :string
     {
-        return 'show one course ' . $id;
+        $courseService = new CourseService();
+
+        $course = $courseService->getCourseById($id);
+
+        return $course === false ?
+            json_encode([
+                'success' => false,
+                'message' => 'Course not found.'
+            ]) :
+            json_encode($course);
     }
 }

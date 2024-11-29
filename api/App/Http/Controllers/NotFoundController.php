@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 class NotFoundController extends Controller
 {
-    public function routeNotFound($path) :string
+    public function routeNotFound($method, $path) :string
     {
-        return sprintf('<h5>Route not found: %s</h5>', $path);
+        return sprintf('<h5>Route [%s] not found: %s</h5>', $method, $path);
     }
 
     public function controllerNotFound($controller) :string
